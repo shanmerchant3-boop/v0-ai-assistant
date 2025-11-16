@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { motion } from "framer-motion"
 import Image from "next/image"
-import { useTheme } from "next-themed"
+import { useTheme } from "next-themes"
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
