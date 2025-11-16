@@ -30,7 +30,7 @@ export default function AdminDashboard() {
       const [ordersRes, productsRes, licensesRes] = await Promise.all([
         supabase.from("orders").select("*").order("created_at", { ascending: false }),
         supabase.from("products").select("id"),
-        supabase.from("licenses").select("*").eq("status", "active")
+        supabase.from("license_keys").select("*").eq("status", "active")
       ])
 
       const orders = ordersRes.data || []
@@ -84,22 +84,23 @@ export default function AdminDashboard() {
     }
 
     setClearing(true)
-    const supabase = createClient()
 
     try {
-      // Delete all orders (this will cascade to order_items)
-      await supabase.from("orders").delete().neq("id", "00000000-0000-0000-0000-000000000000")
+      const response = await fetch("/api/admin/clear-stats", {
+        method: "POST",
+      })
       
-      // Delete all license keys
-      await supabase.from("license_keys").delete().neq("id", "00000000-0000-0000-0000-000000000000")
+      const result = await response.json()
       
-      // Reload stats after clearing
-      await loadStats()
+      if (!result.success) {
+        throw new Error(result.message)
+      }
       
-      alert("All revenue and stats data has been cleared successfully!")
+      alert(result.message)
+      window.location.reload()
     } catch (error) {
-      console.error("Error clearing stats:", error)
-      alert("Failed to clear data. Please try again.")
+      console.error("[v0] Error clearing stats:", error)
+      alert(`Failed to clear data: ${error instanceof Error ? error.message : 'Unknown error'}`)
     } finally {
       setClearing(false)
     }
@@ -311,6 +312,18 @@ export default function AdminDashboard() {
                     <div>
                       <h3 className="font-semibold">Manage Coupons</h3>
                       <p className="text-sm text-muted-foreground">Create and manage discounts</p>
+                    </div>
+                  </div>
+                </Card>
+              </Link>
+
+              <Link href="/admin/users">
+                <Card className="p-4 hover:bg-primary/5 cursor-pointer transition border-border/50">
+                  <div className="flex items-center gap-3">
+                    <Users className="h-8 w-8 text-primary" />
+                    <div>
+                      <h3 className="font-semibold">User Management</h3>
+                      <p className="text-sm text-muted-foreground">Track visitors and customers</p>
                     </div>
                   </div>
                 </Card>

@@ -11,7 +11,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { useCart } from "@/context/cart-context"
 import { useState, useEffect } from "react"
 import { useRouter } from 'next/navigation'
-import { CheckCircle, ShieldCheck, Download, CreditCard, Mail, ChevronRight, Package, DollarSign, User } from 'lucide-react'
+import { CheckCircle, ShieldCheck, Download, CreditCard, Mail, ChevronRight, Package, DollarSign, User, ArrowLeft } from 'lucide-react'
 import { createClient } from "@/lib/supabase/client"
 import { useAuth } from "@/context/auth-context"
 import Link from "next/link"
@@ -249,6 +249,11 @@ export default function CheckoutPage() {
       <Navigation />
 
       <main className="max-w-4xl mx-auto px-4 md:px-8 py-12">
+        <Link href="/cart" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground mb-6 transition-colors">
+          <ArrowLeft className="w-4 h-4" />
+          Back to Cart
+        </Link>
+
         <div className="mb-12">
           <h1 className="text-4xl font-bold mb-6">Checkout</h1>
           <div className="space-y-4">

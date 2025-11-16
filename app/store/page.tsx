@@ -11,9 +11,10 @@ import { Button } from "@/components/ui/button"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Slider } from "@/components/ui/slider"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Search, SlidersHorizontal, X, TrendingUp } from 'lucide-react'
+import { Search, SlidersHorizontal, X, TrendingUp, ArrowLeft } from 'lucide-react'
 import { seedProducts } from "@/lib/data/products"
 import { Badge } from "@/components/ui/badge"
+import Link from "next/link"
 
 export default function StorePage() {
   const [filteredProducts, setFilteredProducts] = useState(seedProducts)
@@ -97,6 +98,11 @@ export default function StorePage() {
       <Navigation />
 
       <main className="max-w-7xl mx-auto px-4 md:px-8 py-20 relative z-10">
+        <Link href="/" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground mb-6 transition-colors">
+          <ArrowLeft className="w-4 h-4" />
+          Back to Home
+        </Link>
+
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-12">
           <div className="flex items-center gap-3 mb-4">
             <h1 className="text-4xl md:text-5xl font-bold">

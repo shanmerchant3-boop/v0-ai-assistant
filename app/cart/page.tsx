@@ -6,7 +6,7 @@ import Footer from "@/components/footer"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { useCart } from "@/context/cart-context"
-import { Trash2, Plus, Minus, ShoppingCart, Shield, Zap, Lock, ArrowRight, Tag, Sparkles } from 'lucide-react'
+import { Trash2, Plus, Minus, ShoppingCart, Shield, Zap, Lock, ArrowRight, Tag, Sparkles, ArrowLeft } from 'lucide-react'
 import Link from "next/link"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -84,6 +84,11 @@ export default function CartPage() {
       <Navigation />
 
       <main className="max-w-7xl mx-auto px-4 md:px-8 py-8 md:py-12">
+        <Link href="/store" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground mb-6 transition-colors">
+          <ArrowLeft className="w-4 h-4" />
+          Continue Shopping
+        </Link>
+
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}

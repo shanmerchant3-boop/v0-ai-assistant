@@ -8,6 +8,7 @@ import { NotificationProvider } from "@/context/notification-context"
 import { ScrollProgress } from "@/components/scroll-progress"
 import { ThemeProvider } from "@/components/theme-provider"
 import ValorantVideoBackground from "@/components/valorant-video-background"
+import { VisitorTracker } from "@/components/visitor-tracker"
 import "./globals.css"
 
 const _geist = Geist({ subsets: ["latin"] })
@@ -49,6 +50,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <ScrollProgress />
+          <VisitorTracker />
           <NotificationProvider>
             <AuthProvider>
               <CartProvider>{children}</CartProvider>
