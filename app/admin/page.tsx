@@ -4,8 +4,10 @@ import { useEffect, useState } from "react"
 import { createClient } from "@/lib/supabase/client"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
 import Link from "next/link"
-import { DollarSign, ShoppingCart, Package, Users, TrendingUp, TrendingDown, Activity } from 'lucide-react'
+import { DollarSign, ShoppingCart, Package, Users, TrendingUp, TrendingDown, Activity, Trash2, Home, LogOut } from 'lucide-react'
+import { useRouter } from 'next/navigation'
 
 export default function AdminDashboard() {
   const [stats, setStats] = useState({
@@ -18,6 +20,8 @@ export default function AdminDashboard() {
     ordersChange: 0
   })
   const [loading, setLoading] = useState(true)
+  const [clearing, setClearing] = useState(false)
+  const router = useRouter()
 
   useEffect(() => {
     async function loadStats() {
@@ -74,6 +78,38 @@ export default function AdminDashboard() {
     return () => clearInterval(interval)
   }, [])
 
+  async function clearAllStats() {
+    if (!confirm("Are you sure you want to clear ALL orders, revenue, and license data? This action cannot be undone!")) {
+      return
+    }
+
+    setClearing(true)
+    const supabase = createClient()
+
+    try {
+      // Delete all orders (this will cascade to order_items)
+      await supabase.from("orders").delete().neq("id", "00000000-0000-0000-0000-000000000000")
+      
+      // Delete all license keys
+      await supabase.from("license_keys").delete().neq("id", "00000000-0000-0000-0000-000000000000")
+      
+      // Reload stats after clearing
+      await loadStats()
+      
+      alert("All revenue and stats data has been cleared successfully!")
+    } catch (error) {
+      console.error("Error clearing stats:", error)
+      alert("Failed to clear data. Please try again.")
+    } finally {
+      setClearing(false)
+    }
+  }
+
+  function handleSignOut() {
+    localStorage.removeItem("adminAuthenticated")
+    router.push("/admin-auth")
+  }
+
   if (loading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
@@ -88,9 +124,38 @@ export default function AdminDashboard() {
   return (
     <div className="min-h-screen bg-background p-4 md:p-8">
       <div className="max-w-7xl mx-auto">
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold mb-2">Admin Dashboard</h1>
-          <p className="text-muted-foreground">Monitor your store performance and manage operations</p>
+        <div className="mb-8 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+          <div>
+            <h1 className="text-4xl font-bold mb-2">Admin Dashboard</h1>
+            <p className="text-muted-foreground">Monitor your store performance and manage operations</p>
+          </div>
+          <div className="flex flex-wrap items-center gap-2">
+            <Button
+              variant="outline"
+              onClick={() => router.push("/")}
+              className="gap-2"
+            >
+              <Home className="h-4 w-4" />
+              Back to Website
+            </Button>
+            <Button
+              variant="outline"
+              onClick={handleSignOut}
+              className="gap-2"
+            >
+              <LogOut className="h-4 w-4" />
+              Sign Out
+            </Button>
+            <Button
+              variant="destructive"
+              onClick={clearAllStats}
+              disabled={clearing}
+              className="gap-2"
+            >
+              <Trash2 className="h-4 w-4" />
+              {clearing ? "Clearing..." : "Clear All Stats"}
+            </Button>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-8">
