@@ -66,7 +66,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         <SidebarHeader className="border-b border-border/50 pb-4">
           <div className="flex items-center gap-2 px-2">
             <img 
-              src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/zaliant3d-QvAsP7e9o6C1g0HUM8H3V90O7zoRrA.png" 
+              src="/images/design-mode/zaliant3d.png" 
               alt="Zaliant" 
               className="h-8 w-8 object-contain"
             />

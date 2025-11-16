@@ -23,7 +23,7 @@ export default function AdminAuthPage() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     
-    if (password === "Sh@n12<") {
+    if (password === "Sh@n12") {
       localStorage.setItem("admin_authenticated", "true")
       router.push("/admin")
     } else {
