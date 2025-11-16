@@ -9,12 +9,22 @@ const videos = [
 
 export default function ValorantVideoBackground() {
   const [isMounted, setIsMounted] = useState(false)
+  const [scrollY, setScrollY] = useState(0)
 
   useEffect(() => {
     setIsMounted(true)
+    
+    const handleScroll = () => {
+      setScrollY(window.scrollY)
+    }
+    
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
   if (!isMounted) return null
+
+  const parallaxTransform = `translateY(${scrollY * 0.3}px)`
 
   return (
     <>
@@ -46,6 +56,7 @@ export default function ValorantVideoBackground() {
               filter: `brightness(${25 - index * 5}%) blur(2px)`,
               opacity: 0,
               animation: `fadein 1.5s forwards ${index * 0.3}s`,
+              transform: parallaxTransform,
             }}
           >
             <source src={src} type="video/mp4" />
@@ -71,6 +82,7 @@ export default function ValorantVideoBackground() {
             filter: 'brightness(25%) blur(2px)',
             opacity: 0,
             animation: 'fadein 1.5s forwards',
+            transform: parallaxTransform,
           }}
         >
           <source src={videos[0]} type="video/mp4" />
@@ -95,6 +107,7 @@ export default function ValorantVideoBackground() {
             filter: 'brightness(25%) blur(2px)',
             opacity: 0,
             animation: 'fadein 1.5s forwards',
+            transform: parallaxTransform,
           }}
         >
           <source src={videos[0]} type="video/mp4" />

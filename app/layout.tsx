@@ -9,6 +9,7 @@ import { ScrollProgress } from "@/components/scroll-progress"
 import { ThemeProvider } from "@/components/theme-provider"
 import ValorantVideoBackground from "@/components/valorant-video-background"
 import { VisitorTracker } from "@/components/visitor-tracker"
+import { AnnouncementBar } from "@/components/announcement-bar"
 import "./globals.css"
 
 const _geist = Geist({ subsets: ["latin"] })
@@ -49,6 +50,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
+          <AnnouncementBar />
           <ScrollProgress />
           <VisitorTracker />
           <NotificationProvider>

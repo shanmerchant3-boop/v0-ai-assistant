@@ -10,6 +10,9 @@ import Hero from "@/components/hero"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { useState, useRef } from "react"
 import { seedProducts } from "@/lib/data/products"
+import LiveActivityFeed from '@/components/live-activity-feed'
+import { TrustSignals } from '@/components/trust-signals'
+import { ComparisonTable } from '@/components/comparison-table'
 
 const fadeInUp = {
   initial: { opacity: 0, y: 20 },
@@ -118,12 +121,16 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-background relative overflow-hidden">
+      <LiveActivityFeed />
       
       <div className="relative z-10">
         <Header />
 
         <main className="flex flex-col gap-24 pb-20">
           <Hero scrollToProducts={scrollToProducts} />
+
+          {/* Trust Signals Section */}
+          <TrustSignals />
 
           {/* Features Section */}
           <section className="px-4 md:px-8">
@@ -274,6 +281,25 @@ export default function Home() {
                     </motion.div>
                   </AnimatePresence>
                 </div>
+                
+                {/* Navigation dots below carousel */}
+                <div className="flex justify-center gap-2 mt-6">
+                  {products.map((_, index) => (
+                    <button
+                      key={index}
+                      onClick={() => {
+                        setSlideDirection(index > currentProductIndex ? 1 : -1)
+                        setCurrentProductIndex(index)
+                      }}
+                      className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                        index === currentProductIndex
+                          ? 'bg-primary w-8'
+                          : 'bg-muted-foreground/30 hover:bg-muted-foreground/50'
+                      }`}
+                      aria-label={`Go to product ${index + 1}`}
+                    />
+                  ))}
+                </div>
               </motion.div>
 
               <div className="text-center mt-8">
@@ -284,6 +310,9 @@ export default function Home() {
               </div>
             </div>
           </section>
+
+          {/* Comparison Table */}
+          <ComparisonTable />
 
           <section className="px-4 md:px-8">
             <div className="max-w-6xl mx-auto">

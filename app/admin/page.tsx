@@ -328,6 +328,18 @@ export default function AdminDashboard() {
                   </div>
                 </Card>
               </Link>
+
+              <Link href="/admin/announcement">
+                <Card className="p-4 hover:bg-primary/5 cursor-pointer transition border-border/50">
+                  <div className="flex items-center gap-3">
+                    <Activity className="h-8 w-8 text-primary" />
+                    <div>
+                      <h3 className="font-semibold">Announcement</h3>
+                      <p className="text-sm text-muted-foreground">Edit site announcement banner</p>
+                    </div>
+                  </div>
+                </Card>
+              </Link>
             </CardContent>
           </Card>
         </div>

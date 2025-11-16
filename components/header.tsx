@@ -16,17 +16,39 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { motion } from "framer-motion"
 import Image from "next/image"
-import { useTheme } from "next-themes"
+import { useTheme } from "next-themed"
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [cartDrawerOpen, setCartDrawerOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
+  const [announcementVisible, setAnnouncementVisible] = useState(true)
   const { theme, setTheme } = useTheme()
   const { items } = useCart()
   const { user, signOut } = useAuth()
   const cartCount = items.reduce((sum, item) => sum + item.quantity, 0)
   const DISCORD_SERVER_URL = "https://discord.gg/zaliantud"
+
+  useEffect(() => {
+    const dismissed = localStorage.getItem('announcement-bar-v2-dismissed')
+    setAnnouncementVisible(dismissed !== 'true')
+
+    const handleStorageChange = () => {
+      const dismissed = localStorage.getItem('announcement-bar-v2-dismissed')
+      setAnnouncementVisible(dismissed !== 'true')
+    }
+    window.addEventListener('storage', handleStorageChange)
+    
+    const handleDismiss = () => {
+      setAnnouncementVisible(false)
+    }
+    window.addEventListener('announcement-dismissed', handleDismiss)
+
+    return () => {
+      window.removeEventListener('storage', handleStorageChange)
+      window.removeEventListener('announcement-dismissed', handleDismiss)
+    }
+  }, [])
 
   useEffect(() => {
     const handleScroll = () => {
@@ -51,7 +73,7 @@ export default function Header() {
   return (
     <>
       <header
-        className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-300 ${
+        className={`fixed ${announcementVisible ? 'top-[52px]' : 'top-0'} left-0 right-0 z-[100] transition-all duration-300 ${
           scrolled
             ? "bg-background/95 backdrop-blur-md border-b border-primary/20 shadow-lg shadow-primary/5"
             : "bg-background/80 backdrop-blur-sm border-b border-primary/10"

@@ -4,7 +4,6 @@ import { useState, useEffect } from "react"
 import { Heart } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { motion } from "framer-motion"
-import toast from "react-hot-toast"
 
 interface WishlistButtonProps {
   productId: string
@@ -28,12 +27,10 @@ export function WishlistButton({ productId, className }: WishlistButtonProps) {
       const updated = wishlist.filter((id: string) => id !== productId)
       localStorage.setItem("wishlist", JSON.stringify(updated))
       setIsWishlisted(false)
-      toast.success("Removed from wishlist")
     } else {
       wishlist.push(productId)
       localStorage.setItem("wishlist", JSON.stringify(wishlist))
       setIsWishlisted(true)
-      toast.success("Added to wishlist")
     }
   }
 

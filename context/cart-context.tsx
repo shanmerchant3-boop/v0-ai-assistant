@@ -2,7 +2,6 @@
 
 import type React from "react"
 import { createContext, useContext, useState, useEffect } from "react"
-import toast from "react-hot-toast"
 import { PROMO_CODES } from "@/lib/products"
 
 export interface CartItem {
@@ -82,7 +81,6 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       }
       return [...prev, { ...item, quantity: 1 }]
     })
-    toast.success("Added to cart")
   }
 
   const removeItem = (id: string) => {
@@ -100,19 +98,16 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const applyPromo = (code: string) => {
     const trimmedCode = code.trim().toUpperCase()
     if (!PROMO_CODES[trimmedCode]) {
-      toast.error("Invalid promo code")
       return false
     }
     setPromoCode(trimmedCode)
     localStorage.setItem("promoCode", trimmedCode)
-    toast.success(`Promo code "${trimmedCode}" applied!`)
     return true
   }
 
   const removePromo = () => {
     setPromoCode(null)
     localStorage.removeItem("promoCode")
-    toast.success("Promo code removed")
   }
 
   const clearCart = () => {
